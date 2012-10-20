@@ -3,9 +3,11 @@ Version No: 1.0
 */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "inputString.h"
 #include "utilities.h"
+#include "patternString.h"
 
 /*
 Function Name: i_makeInputString
@@ -20,14 +22,30 @@ Return Type: It returns a integer value.
 int i_makeInputString(){
 
     char c_alphabetSet[SETSIZE];
+    char *cPtr_pattern = NULL;
 
+    unsigned int ui_count = 10;
+    unsigned int ui_pos = 0;
     int i_retVal = 0;
-
+    int j = 0;
     memset(&c_alphabetSet,'\0',SETSIZE);
 
     i_retVal = i_getAlphabetSet(c_alphabetSet);
     if(SUCCESS == i_retVal){
          v_writeTextToFile(c_alphabetSet);
+         i_retVal = i_getPatternLength();
+         v_computePatterns((unsigned int)i_retVal,c_alphabetSet);
+         cPtr_pattern = cPtr_getPattern(cPtr_pattern,(unsigned int)i_retVal);
+         do{
+              j = i_randomNumberInRange(0,MAXSIZE);
+              ui_pos = (ui_pos+j)%MAXSIZE;
+              printf("%d ",ui_pos);
+              v_writeTextToFileAtPosition(cPtr_pattern,ui_pos);
+              ui_count--;
+         } while ( ui_count > 0);  
+         printf("\n");       
+    } else {
+         return FAILURE;
     }
     return SUCCESS;
 }
@@ -98,6 +116,7 @@ void v_writeTextToFile(char *cPtr_alphabetSet){
 
     if( (fp = fopen(FILELOCATION,"w+")) == NULL){
          printf("ERROR: Cannot create the file \n");
+         exit(1);
     }
 
     memset(&cArr_inputText,'\0',MAXSIZE);
@@ -114,14 +133,14 @@ void v_writeTextToFile(char *cPtr_alphabetSet){
     printf("\n");
 #endif
 
-    for(i = MAXSIZE; i >= 1; i--){
+    for(i = MAXSIZE-1; i >= 1; i--){
          j = i_randomNumberInRange(0,i);
 #if DEBUG
     printf("%d ",j);
 #endif
          c_temp = cArr_inputText[i];
          cArr_inputText[i] = cArr_inputText[j];
-         cArr_inputText[i] = c_temp;
+         cArr_inputText[j] = c_temp;
 #if DEBUG
     printf("%c %c \n",cArr_inputText[i],cArr_inputText[j]);
 #endif       
@@ -134,9 +153,43 @@ void v_writeTextToFile(char *cPtr_alphabetSet){
     printf("\n");
 #endif
 
-    if( (fputs(cArr_inputText,fp)) == EOF){
-         printf("ERROR: Cannot write data to the file \n");
+    for(i = 0; i < MAXSIZE; i++){
+         fwrite(&cArr_inputText[i],sizeof(char),1,fp);
+    }
+    
+    fclose(fp);   
+}
+
+/*
+Function Name:
+Description:
+Parameters:
+Return Type:
+*/
+void v_writeTextToFileAtPosition(char *cPtr_charsToWrite, unsigned int ui_pos){
+
+    unsigned int ui_noOfCharacters = 0;
+
+    int i = 0;
+
+    FILE *fp = NULL;
+
+    if( (fp=fopen(FILELOCATION,"r+")) == NULL){
+         printf("ERROR: Cannot Open The File \n");
+         exit(1);
     }
 
-    fclose(fp);   
+    if( (fseek(fp,0,SEEK_SET)) == -1){
+         printf("ERROR: Cannot move the file pointer to the starting of the file \n");
+    }
+    if( (fseek(fp,ui_pos,SEEK_SET)) == -1){
+         printf("ERROR: Cannot move the file pointer to the correct location \n");
+    } else {
+         ui_noOfCharacters = strlen(cPtr_charsToWrite);
+         for( i = 0; i < ui_noOfCharacters; i++){
+              fwrite(&(*(cPtr_charsToWrite+i)),sizeof(char),1,fp);
+         }
+    }
+
+    fclose(fp);
 }

@@ -4,7 +4,7 @@ CC	=	gcc
 
 CFLAGS	=	-g -I$(BFDIR)/include -ansi -pedantic -Wall -Werror
 
-OBJS	=	$(BFDIR)/src/utilities.o $(BFDIR)/src/inputString.o $(BFDIR)/src/main.o
+OBJS	=	$(BFDIR)/src/patternString.o $(BFDIR)/src/utilities.o $(BFDIR)/src/inputString.o $(BFDIR)/src/main.o
 
 TARGET	=	bloomFilter
 
