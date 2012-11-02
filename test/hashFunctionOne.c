@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 
-#define DEBUG 0
+#define DEBUG 1
 
 unsigned long hash(unsigned char *cPtr_string,unsigned long ul_hashValue[10],int flag){
 	
@@ -49,7 +49,7 @@ unsigned long hash(unsigned char *cPtr_string,unsigned long ul_hashValue[10],int
 #endif
 	for(i=0;i<=str_length-2;i++){
 	      for(j=0;j<=i;j++){
-	           ul_hashValue[j] = (ul_hashValue[j]<<5)+ul_hashValue[j];
+	           ul_hashValue[j] = (ul_hashValue[j]<<5) + ul_hashValue[j];
 	      }
 #if DEBUG
               for(j=0;j<=i;j++){
