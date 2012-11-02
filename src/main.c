@@ -13,7 +13,19 @@ int main(int argc,char *argv[]){
 
     i_retVal = i_makeInputString();
     if(SUCCESS == i_retVal){
-              
+         i_retVal = i_performInsertOperation();
+    } else {
+
+    }
+    if(SUCCESS == i_retVal){
+         i_retVal = i_performSearchOperation();
+    } else {
+
+    }
+    if(SUCCESS == i_retVal){
+         i_retVal = i_performKMP();
+    } else {
+
     }
     return 0;
 }

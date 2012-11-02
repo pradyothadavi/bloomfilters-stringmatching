@@ -18,5 +18,5 @@ $(OBJS): %.o : %.c
 all: bloomFilter
 
 clean:
-	rm -f $(BFDIR)/bin/*.o core $(BFDIR)/bin/$(TARGET)
+	rm -f $(BFDIR)/bin/*.o core $(BFDIR)/src/*.o core $(BFDIR)/bin/$(TARGET)
 
