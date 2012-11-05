@@ -1,3 +1,9 @@
+#include <stdlib.h>
+#include <string.h>
+
+#include "insertOps.h"
+#include "hashFunctions.h"
+
 /*
 Function Name:
 Description:
@@ -6,6 +12,7 @@ Return Type:
 */
 int i_performInsertOperation(){
 
+    char *cPtr_buffer = NULL;
     unsigned int ui_patternLength = 0;
     unsigned int ui_fileOffset = 0;
     int i_retVal = FAILURE;
@@ -65,13 +72,13 @@ Description:
 Parameters:
 Return Type:
 */
-int i_insertIntoBloomFilter(char *cPtr_buffer,ui_patternLength){
+int i_insertIntoBloomFilter(char *cPtr_buffer,unsigned int ui_patternLength){
 
     char *cPtr_strLengthOfK = NULL;
     
     unsigned int ui_count = 0;
     unsigned long ul_hashIndex = -1;
-
+    int flag = 0;
     do{
          /* Read from buffer a string of length k */
          cPtr_strLengthOfK = cPtr_readStringOfLengthK(cPtr_buffer,ui_patternLength);
@@ -79,7 +86,10 @@ int i_insertIntoBloomFilter(char *cPtr_buffer,ui_patternLength){
          ui_count++;
 
          /* Perform hashing using hash function 01 */
-         ul_hashIndex = hashFunctionOne(cPtr_strLengthOfK);
+         ul_hashIndex = hashFunctionOne(cPtr_strLengthOfK,flag);
+         if( 0 == flag){
+              flag = 1;
+         }
          v_updateBloomFilter(ul_hashIndex);
 
     } while (cPtr_strLengthOfK != NULL);

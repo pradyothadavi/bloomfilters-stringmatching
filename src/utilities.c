@@ -36,3 +36,42 @@ int i_randomNumberInRange(unsigned int ui_min, unsigned int ui_max){
          return i_randomNumberInRange(ui_min, ui_max);
     }
 }
+
+/*
+Function Name:
+Description:
+Parameters:
+Return Type:
+*/
+char *cPtr_loadBloomFilter(FILE *bloomFp){
+
+    char *cPtr_dummy = NULL;
+
+    return cPtr_dummy;
+}
+
+/*
+Function Name:
+Description: Read the patterns which are stored in a file. Each time one pattern
+             is returned.
+Parameters:
+Return Type:
+*/
+char *cPtr_getPatternFromFile(){
+
+    char *cPtr_dummy = NULL;
+
+    return cPtr_dummy;
+
+
+}
+
+/*
+Function Name:
+Description:
+Parameters:
+Return Type:
+*/
+void v_writePatternToFile(char *cPtr_pattern){
+
+}
