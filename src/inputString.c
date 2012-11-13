@@ -34,7 +34,7 @@ int i_makeInputString(){
     if(SUCCESS == i_retVal){
          v_writeTextToFile(c_alphabetSet);
          i_retVal = i_getPatternLength();
-         v_computePatterns((unsigned int)i_retVal,c_alphabetSet);
+         /*v_computePatterns((unsigned int)i_retVal,c_alphabetSet);*/
          cPtr_pattern = cPtr_getPattern(cPtr_pattern,(unsigned int)i_retVal);
          do{
               j = i_randomNumberInRange(0,MAXSIZE);
@@ -80,7 +80,7 @@ int i_getAlphabetSet(char *cPtr_alphabetSet){
          }
     }
 
-#if DEBUG
+#if IP_IP_DEBUG
     printf(" Alphabet Set : ");
     while(*cPtr_retVal != '\0'){
          printf("%c",*cPtr_retVal);
@@ -125,7 +125,7 @@ void v_writeTextToFile(char *cPtr_alphabetSet){
     for(i = 0;i < MAXSIZE; i++){
          cArr_inputText[i] = *(cPtr_alphabetSet+(i%i_noOfAlphabets));
     }
-#if DEBUG
+#if IP_DEBUG
     printf(" Input Text Before Shuffle: ");
     for(i = 0;i < MAXSIZE; i++){
          printf("%c",cArr_inputText[i]);
@@ -135,17 +135,17 @@ void v_writeTextToFile(char *cPtr_alphabetSet){
 
     for(i = MAXSIZE-1; i >= 1; i--){
          j = i_randomNumberInRange(0,i);
-#if DEBUG
+#if IP_DEBUG
     printf("%d ",j);
 #endif
          c_temp = cArr_inputText[i];
          cArr_inputText[i] = cArr_inputText[j];
          cArr_inputText[j] = c_temp;
-#if DEBUG
+#if IP_DEBUG
     printf("%c %c \n",cArr_inputText[i],cArr_inputText[j]);
 #endif       
     }
-#if DEBUG
+#if IP_DEBUG
     printf("\n Input Text After Shuffle: ");
     for(i = 0;i < MAXSIZE; i++){
          printf("%c",cArr_inputText[i]);

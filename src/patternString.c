@@ -60,7 +60,7 @@ char *cPtr_getPattern(char *cPtr_pattern, unsigned int ui_patternLength){
          }
     } while ( ui_length != ui_patternLength );
     
-#if DEBUG
+#if PATTERN_DEBUG
     ui_length = 0;
     printf("DEBUG: The pattern is ");
     while( *(cPtr_pattern + ui_length) != '\0'){

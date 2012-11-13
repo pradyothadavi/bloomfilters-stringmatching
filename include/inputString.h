@@ -8,8 +8,11 @@ Version No: 1.0
 #define SUCCESS 1
 #define FAILURE 0
 
+#define IP_DEBUG 0
+
 #define SETSIZE 10
-#define MAXSIZE 500
+
+#define MAXSIZE 1000000
 
 #define FILELOCATION "../data/inputText.txt"
 

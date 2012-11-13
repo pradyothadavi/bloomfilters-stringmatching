@@ -18,5 +18,8 @@ int main(int argc,char *argv[]){
     } else {
 
     }
+    if(i_retVal > 0){
+         v_writeBloomFilterToFile();
+    }
     return 0;
 }

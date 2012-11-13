@@ -1,8 +1,10 @@
 #ifndef _HASH_FUNCTIONS_
 #define _HASH_FUNCTIONS_
 
-#define DEBUG 1
+#define HASH1_DEBUG 0
+#define HASH2_DEBUG 0
 
-unsigned long hashFunctionOne(char *,int);
+unsigned int hashFunctionOne(char *,int);
+unsigned int hashFunctionTwo(char *,int);
 
 #endif

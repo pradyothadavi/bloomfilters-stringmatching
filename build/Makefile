@@ -13,7 +13,7 @@ INSERT_TARGET	=	insertBloomFilter
 SEARCH_TARGET	=	searchBloomFilter
 
 $(INSERT_TARGET):	$(INSERT_OBJS)
-	$(CC) -o $(BFDIR)/bin/$@ $(INSERT_OBJS)	
+	$(CC) -o $(BFDIR)/bin/$@ $(INSERT_OBJS) -lm	
 	mv $(BFDIR)/src/*.o $(BFDIR)/bin
 
 $(INSERT_OBJS): %.o : %.c
