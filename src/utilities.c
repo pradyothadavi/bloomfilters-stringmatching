@@ -75,3 +75,17 @@ Return Type:
 void v_writePatternToFile(char *cPtr_pattern){
 
 }
+
+/*
+Function Name:
+Description:
+Parameters:
+Return Type:
+*/
+void v_generatePatternsOfLengthK(int i_patternLength){
+
+    if(i_patternLength <= 0){
+         printf("ERROR: Cannot Generate Pattern As Length Is Zero \n");
+         return;
+    }
+}

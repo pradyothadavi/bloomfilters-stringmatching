@@ -1,5 +1,5 @@
 /*
-Version No:
+Version No: 1.0
 */
 
 #include <stdio.h>
@@ -22,7 +22,7 @@ int main(int argc,char *argv[]){
     } 
          
     if( (bloomFp = fopen(argv[1],"r")) == NULL){
-
+         printf("ERROR: Bloom Filter Not Found \n");
     }
 
     /* Load the bloom filter into the main memory */

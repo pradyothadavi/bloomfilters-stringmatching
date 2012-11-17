@@ -9,4 +9,6 @@ int i_randomNumberInRange(unsigned int, unsigned int);
 char *cPtr_loadBloomFilter(FILE *);
 char *cPtr_getPatternFromFile();
 void v_writePatternToFile(char *);
+void v_generatePatternsOfLengthK(int);
+
 #endif

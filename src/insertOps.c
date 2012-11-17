@@ -30,7 +30,7 @@ int i_performInsertOperation(){
     time_t start_time,end_time;
     
     start_time= time(NULL);
-
+    
     ui_patternLength = (unsigned int)i_getPatternLength();
          
     do{
@@ -42,6 +42,7 @@ int i_performInsertOperation(){
          if( NULL != cPtr_buffer){
               /* Populate the Bloom Filter */
               ui_fileOffset = i_insertIntoBloomFilter(cPtr_buffer,ui_patternLength);
+              exit(1);
          }
 
     } while (cPtr_buffer != NULL);
@@ -108,14 +109,16 @@ int i_insertIntoBloomFilter(char *cPtr_buffer,unsigned int ui_patternLength){
     do{
          /* Read from buffer a string of length k */
          cPtr_strLengthOfK = cPtr_readStringOfLengthK(cPtr_buffer,ui_patternLength);
-      
+         
          if( NULL != cPtr_strLengthOfK){
+              
               /* Perform hashing using hash function 01 */
               ui_hashIndex = hashFunctionOne(cPtr_strLengthOfK,flag);
 #if INS_DEBUG
               printf(" Hash Index : %d \n",ui_hashIndex);
 #endif
               v_updateBloomFilter(ui_hashIndex);
+
               /* Perform hashing using hash function 02 */
               ui_hashIndex = hashFunctionTwo(cPtr_strLengthOfK,flag);
 #if INS_DEBUG
@@ -127,7 +130,6 @@ int i_insertIntoBloomFilter(char *cPtr_buffer,unsigned int ui_patternLength){
               }
          }
          
-
     } while (cPtr_strLengthOfK != NULL);
 #if INS_DEBUG
     printf(" No of characters parsed : %d \n",((strlen(cPtr_buffer)-1)-ui_patternLength + 1));
@@ -188,11 +190,6 @@ void v_writeBloomFilterToFile(){
          printf("ERROR: Cannot Open The File \n");
          exit(1);
     }
-    /*
-    if(fwrite(&ui_bloomFilter,sizeof(BLOOMFILTERSIZE),1,fpBloomFilter)!=1){
-         printf("ERROR: Bloom filter output error\n");
-    }
-    */        
     
     for(i = 0 ; i < BLOOMFILTERSIZE; i++){
          fprintf(fpBloomFilter,"%d ",ui_bloomFilter[i]);
