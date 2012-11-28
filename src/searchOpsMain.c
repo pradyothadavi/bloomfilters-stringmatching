@@ -8,44 +8,35 @@ Version No: 1.0
 #include "utilities.h"
 #include "searchOpsMain.h"
 #include "searchOps.h"
+#include "kmp.h"
 
-int main(int argc,char *argv[]){
+int main(){
 
-    FILE *bloomFp = NULL;
+    unsigned int ui_noOfPatterns = 0;
+    unsigned int ui_choice = 0;
+
+    printf("------------------ Menu ------------------ \n");
+    printf("1) Search Patterns Using BloomFilter & KMP \n");
+    printf("2) Search Patterns Using KMP Only \n");
+    printf("------------------------------------------ \n");
+    printf("Enter the choice : ");
+    scanf("%u",&ui_choice);
+
+    switch(ui_choice){
     
-    char *cPtr_bloomFilter = NULL;
-    char *cPtr_pattern = NULL; 
-    int i_retVal = FAILURE;
+         case 1: ui_noOfPatterns = ui_performSearchOps();
+                 if( ui_noOfPatterns > 0 ){
+                      i_performKmpSearch(ui_noOfPatterns);
+                 }
+                 break;
+
+         case 2: printf("Enter the no.of.patterns present in Pattern File: ");
+                 scanf("%u",&ui_noOfPatterns);
+                 i_performKmpSearch(ui_noOfPatterns);
+                 break;
+
+         default:printf("Invalid Option \n");
+    }
     
-    if(argc != 2){
-         return (1);
-    } 
-         
-    if( (bloomFp = fopen(argv[1],"r")) == NULL){
-         printf("ERROR: Bloom Filter Not Found \n");
-    }
-
-    /* Load the bloom filter into the main memory */
-    cPtr_bloomFilter = cPtr_loadBloomFilter(bloomFp);
-
-    if( NULL != cPtr_bloomFilter){
-
-         do{
-              /* Get the patterns from the text file in which the patterns
-                 will be stored.
-              */
-              cPtr_pattern = cPtr_getPatternFromFile();
-              
-              /* Search the pattern in the bloom filter */
-              i_retVal = i_performSearchOperation(cPtr_bloomFilter,cPtr_pattern);
-
-              if(SUCCESS == i_retVal){
-                   /* Write it into a file */
-                   v_writePatternToFile(cPtr_pattern);
-              }
-
-         } while(NULL != cPtr_pattern);
-         
-    }
     return 0;
 }

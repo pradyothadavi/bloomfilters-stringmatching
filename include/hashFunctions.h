@@ -6,5 +6,6 @@
 
 unsigned int hashFunctionOne(char *,int);
 unsigned int hashFunctionTwo(char *,int);
+unsigned int hashFunctionThree(char *,int);
 
 #endif

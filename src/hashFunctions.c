@@ -1,8 +1,11 @@
+#include <stdlib.h>
 #include<stdio.h>
 #include<string.h>
 #include<math.h>
 #include "hashFunctions.h"
 #include "insertOps.h"
+#include "constants.h"
+
 /*
 Function Name:
 Descriptions:
@@ -16,7 +19,7 @@ unsigned int hashFunctionOne(char *cPtr_string,int flag){
     int str_length = 0;
 
     unsigned long final_sum = 0;
-    static unsigned long ul_hashValue[BLOOMFILTERSIZE];
+    static unsigned long ul_hashValue[PATTERNLENGTH];
     
     str_length = strlen(cPtr_string);
 #if HASH1_DEBUG
@@ -120,93 +123,47 @@ unsigned int hashFunctionOne(char *cPtr_string,int flag){
     return (final_sum%BLOOMFILTERSIZE);
 }
 
+
 /*
 Function Name:
 Descriptions:
 Parameters:
 Return Type:
 */
-unsigned int hashFunctionTwo(char *cPtr_string,int flag)
-{
-	
-	int i = 0;    
-	int str_length = 0;
-	static unsigned long ul_hashValue[10];
-        /**(cPtr_string+strlen(cPtr_string)-1) = '\0'; */
+unsigned int hashFunctionTwo(char *cPtr_string,int flag){
 
-       	str_length = strlen(cPtr_string);
-#if HASH2_DEBUG        
-        printf("String length: %d \n",str_length);       
-        printf("String is : ");
+    static unsigned int ui_hashValue[PATTERNLENGTH];
+    unsigned int ui_tempValue[PATTERNLENGTH];
 
-        while(*(cPtr_string+i) != '\0')
-	{
-               printf("%c",*(cPtr_string+i));
-               i++;
-        }
-        printf("\n");
+    unsigned int ui_strLength = 0;
+    unsigned int ui_sum = 0;
+    unsigned int ui_a = 63689;
+    unsigned int ui_b = 378551;
+    int i = 0;
 
-#endif	
-       if(flag == 0)
-	{
-	     /*For 1: initialize array to 1*/
-#if HASH2_DEBUG        
-             printf("\nFor 1\n"); 
-#endif
-	     for(i=0; i<=str_length; i++)
- 		{
-                    ul_hashValue[i]=1;
-#if HASH2_DEBUG                            
-                    printf("ul_hashValue[%d] : %ld \n",i,ul_hashValue[i]);
-#endif
-	 	}
-	     /* 
-	        For 2: calculate hashIndex for length of string. 
-	        Value of last index has hash value
-	     */	
-#if HASH2_DEBUG                        
-	     printf("\n\nFor 2\n");	         
-#endif
-	     ul_hashValue[0]=*cPtr_string;
-#if HASH2_DEBUG        	     
-	     printf("ul_hashValue[%d] : %ld \n",0,ul_hashValue[0]);
-#endif	     
-	    	
-             for(i=1;i<=str_length-1;i++)
-		{
-		    ul_hashValue[i]= *(cPtr_string+i) + (ul_hashValue[i-1]<<6) + (ul_hashValue[i-1]<<16) - ul_hashValue[i-1];
-#if HASH2_DEBUG        		    
-                    printf("ul_hashValue[%d] : %ld \n",i,ul_hashValue[i]);
-#endif                    
-	        }
-        }
-       
-        if(flag == 1)
-        {
-             for(i=1;i<=str_length-2;i++)
-	        {
-		    ul_hashValue[i] = ul_hashValue[i] - ( ul_hashValue[0] * (pow(65599,i)));
-#if HASH2_DEBUG        		    		    
-		    printf("ul_hashValue[%d] : %ld \n",i,ul_hashValue[i]);
-#endif
-	        }
+    ui_strLength = strlen(cPtr_string);
+    if( 0 == flag ){
 
+         for(i = 0;i < ui_strLength-1;i++){
+              ui_tempValue[i] = ui_a * ui_b;
+              ui_a = ui_a * ui_b;
+         }
 
-             for(i=0;i<=str_length-2;i++)
-		{
-                    ul_hashValue[i] = ul_hashValue[i+1];
-#if HASH2_DEBUG        		                        
-	            printf("ul_hashValue[%d] : %ld \n",i,ul_hashValue[i]);
-#endif	            
-	        }
-#if HASH2_DEBUG        		    
-              printf("Character: %c \n",*(cPtr_string+(str_length-1)));
-#endif              
-	      ul_hashValue[str_length-1] = ( ul_hashValue[str_length-2]<<6) + ( ul_hashValue[str_length-2]<<16) -  ul_hashValue[str_length-2] + 							                    *(cPtr_string+str_length-1);
-	     	  
-        }
-       
- 	return (ul_hashValue[str_length-1]%BLOOMFILTERSIZE);   
+         ui_hashValue[ui_strLength-1] = 1;
+         for(i = ui_strLength-2; i >= 0 ; i--){
+              ui_hashValue[i] = ui_hashValue[i+1] * ui_tempValue[i]; 
+         }
+    }
+    ui_sum = 0;
+    for(i = 0; i < ui_strLength; i++){
+         ui_tempValue[i] = ui_hashValue[i] * (*(cPtr_string + i ));
+#if HASH2_DEBUG
+         printf("ui_hashValue[%d] : %d \n",i,ui_hashValue[i]);
+#endif 
+         ui_sum = ui_sum + ui_tempValue[i];
+    }
+    ui_sum = ui_sum%BLOOMFILTERSIZE;
 
+    return ui_sum;
 }
 
